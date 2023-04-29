@@ -4,7 +4,6 @@ import com.example.demo.model.*;
 import com.example.demo.repositories.AppUserRepository;
 import com.example.demo.exception.AccessException;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +13,7 @@ import java.util.List;
 @Service
 public class AppUserService {
 
+    private static final String ERROR_MESSAGE = "User not found";
     AppUserRepository appUserRepository;
 
     public AppUserService(AppUserRepository appUserRepository)
@@ -55,21 +55,21 @@ public class AppUserService {
 
     public List<AppUser> findAll(String username) {
         AppUser user = appUserRepository.findByName(username);
-        if(user == null)throw new ResourceNotFoundException("User not found");
+        if(user == null)throw new ResourceNotFoundException(ERROR_MESSAGE);
         if(user.isHasAdminRights()) return appUserRepository.findAll();
         throw new AccessException("Only Admin users can access this!");
     }
 
     public AppUser findByName(String username) {
         AppUser user = appUserRepository.findByName(username);
-        if(user == null)throw new ResourceNotFoundException("User not found");
+        if(user == null)throw new ResourceNotFoundException(ERROR_MESSAGE);
         return user;
     }
 
     public AppUser updateUser(UpdateUserParams updateUserParams, Long accountID) {
         AppUser user = appUserRepository.findByName(updateUserParams.getUsername());
-        AppUser loginUser = appUserRepository.findById(accountID).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        if(user == null)throw new ResourceNotFoundException("User not found");
+        AppUser loginUser = appUserRepository.findById(accountID).orElseThrow(() -> new ResourceNotFoundException(ERROR_MESSAGE));
+        if(user == null)throw new ResourceNotFoundException(ERROR_MESSAGE);
         if(loginUser.isHasAdminRights())
         {
             user.setName(updateUserParams.getNewUsername());

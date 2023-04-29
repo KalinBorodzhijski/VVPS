@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.TicketReservationException;
 import com.example.demo.model.*;
 import com.example.demo.repositories.AppUserRepository;
 import com.example.demo.repositories.ReservationRepository;
@@ -7,7 +8,6 @@ import com.example.demo.repositories.TicketRepository;
 import com.example.demo.repositories.TrainRepository;
 import com.example.demo.exception.AccessException;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -94,7 +94,7 @@ public class TicketManagementService {
     private void checkTrainCapacity(Train train) {
         if(train.getTickets().size() >= train.getTrainCapacity())
         {
-            throw new RuntimeException("This train is full and there are no more tickets!");
+            throw new TicketReservationException("This train is full and there are no more tickets!");
         }
     }
 

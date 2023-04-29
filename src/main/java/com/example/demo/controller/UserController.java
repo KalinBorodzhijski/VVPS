@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.UpdateUserParams;
 import com.example.demo.repositories.AppUserRepository;
-import com.example.demo.model.*;
 import com.example.demo.service.AppUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
