@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,4 +29,11 @@ public class AppUser {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<Reservation> reservations;
 
+    public AppUser(long userID, String name, boolean hasAdminRights) {
+        this.userID = userID;
+        this.name = name;
+        this.hasAdminRights = hasAdminRights;
+        this.reservations = new ArrayList<>();
+
+    }
 }

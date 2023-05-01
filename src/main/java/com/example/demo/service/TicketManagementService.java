@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class TicketManagementService {
@@ -85,6 +86,13 @@ public class TicketManagementService {
         return ticket;
     }
 
+    public void deleteTickets(List<Ticket> tickets){
+        for (Ticket t : tickets) {
+            deleteTicket(t.getTicketID(),t.getTicketOwner().getName());
+        }
+        ticketRepository.deleteAll(tickets);
+    }
+
     private Reservation checkIfReservationValid(TicketReservationDTO ticketReservationDTO) {
         return reservationRepository.findById(ticketReservationDTO.getReservationID())
                 .orElseThrow(() -> new ResourceNotFoundException("Reservation not found!"));
@@ -128,7 +136,7 @@ public class TicketManagementService {
         throw new IllegalArgumentException(String.format("User with username %s does not exists!",appUserName));
     }
 
-    private double calculateTicketPrice(Train train, TicketReservationDTO ticketReservationDTO){
+    public double calculateTicketPrice(Train train, TicketReservationDTO ticketReservationDTO){
 
         double ticketPrice = 0;
         boolean isInRushHours = false;
